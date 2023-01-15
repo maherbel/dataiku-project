@@ -60,13 +60,6 @@ public class RouteController {
 
     /**
      * Handles a POST request to compute the Millenium Falcon mission success probability.
-     *
-     * @param page The page number to retrieve (optional, default is 0).
-     * @param size The number of users per page (optional, default is 10).
-     * @return A list of users.
-     */
-    /**
-     * Handles a POST request to compute the Millenium Falcon mission success probability.
      * This probability is a percentage that can range from 0% to 100%.
      *
      * @param empireModel The empire data containing the mission countdown and the bounty hunters positions
