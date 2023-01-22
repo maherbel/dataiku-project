@@ -1,5 +1,7 @@
 package com.dataiku.millenium.controllers;
 
+import com.dataiku.millenium.exceptions.ComputeMissionResultException;
+import com.dataiku.millenium.exceptions.MissionDataRetrievalException;
 import com.dataiku.millenium.pojos.EmpireModel;
 import com.dataiku.millenium.pojos.MissionDataModel;
 import com.dataiku.millenium.pojos.MissionResultModel;
@@ -53,7 +55,7 @@ public class RouteController {
      * @return A MissionDataModel
      */
     @GetMapping("/missionData")
-    public MissionDataModel getMissionData() {
+    public MissionDataModel getMissionData() throws MissionDataRetrievalException {
         logger.info("Retrieving mission data.");
         return routeService.getMissionData();
     }
@@ -67,8 +69,14 @@ public class RouteController {
      */
     @PostMapping(value = "/missionResultSuccess", consumes = "application/json", produces = "application/json")
     public MissionResultModel computeMilleniumFalconMission(@RequestBody EmpireModel empireModel) {
-        // TODO ADD ERROR INSIDE MISSIONRESULTMODEL TO RETURN TO CLIENT IF PROCESS FAILED
-        logger.info("Computing mission success probability.");
-        return routeService.computeMissionResult(empireModel);
+        try {
+            logger.info("Computing mission success probability.");
+            return routeService.computeMissionResult(empireModel);
+        } catch (ComputeMissionResultException e) {
+            logger.error("An error happened during the compute..", e);
+            MissionResultModel missionResultModel = new MissionResultModel();
+            missionResultModel.getErrors().add("An error happened during the mission result compute.");
+            return missionResultModel;
+        }
     }
 }

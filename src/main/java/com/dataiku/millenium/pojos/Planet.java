@@ -24,6 +24,8 @@ public class Planet {
 
     private int delay;
 
+    private boolean isRisky;
+
     public Planet() {
 
     }
@@ -82,6 +84,14 @@ public class Planet {
         this.delay = delay;
     }
 
+    public boolean isRisky() {
+        return isRisky;
+    }
+
+    public void setRisky(boolean risky) {
+        isRisky = risky;
+    }
+
     public Planet deepCopy() {
         // Create a new object and deep-copy the fields
         return new Planet(this.name, this.day, this.isRefuel, this.delay);
@@ -94,6 +104,7 @@ public class Planet {
                 ", day='" + day + '\'' +
                 (isRefuel ? ", Refuel" : "") +
                 (delay > 0 ? ", delay='" + delay + '\'' : "") +
+                (isRisky ? ", Risky" : "") +
                 '}';
     }
 }

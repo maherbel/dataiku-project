@@ -39,8 +39,9 @@ public class PathOptimizer {
      * @return the mission result, including success probability and path
      */
     public MissionResultModel computeMissionResult(EmpireModel empireModel, List<Route> routes, MilleniumFalconModel milleniumFalconModel) {
-        logger.info("Compute mission result started. Departure: [{}], Arrival: [{}], Countdown: [{}]",
-                milleniumFalconModel.getDeparture(), milleniumFalconModel.getArrival(), empireModel.getCountdown());
+        logger.info("Compute mission result started. Departure: [{}], Arrival: [{}], Countdown: [{}], Autonomy: [{}]",
+                milleniumFalconModel.getDeparture(), milleniumFalconModel.getArrival(), empireModel.getCountdown(),
+                milleniumFalconModel.getAutonomy());
         // Compute the different routes (from planet to planet) for how much travel time and create a Map of Planet by planet name
         Map<String, Planet> planetHelper = new HashMap<>();
         Map<Planet, Map<Planet, Integer>> routesAdjacencyMap = computeNeighboursByPlanet(routes, planetHelper);
@@ -49,9 +50,7 @@ public class PathOptimizer {
         // Fetch the best possible route (if exists) with the best probability to not get caught by the Empire
         List<List<Planet>> allPossiblePaths = computePaths(empireModel, routesAdjacencyMap, planetHelper, milleniumFalconModel);
         // Process all successful paths (if any) that were found given the constraints
-        MissionResultModel missionResultModel = computeBestSuccessProbability(allPossiblePaths, empireModel, empireLocations);
-        logger.info("Compute mission result ended with a success probability of [{}%].", missionResultModel.getMissionSuccessProbability());
-        return missionResultModel;
+        return computeBestSuccessProbability(allPossiblePaths, empireModel, empireLocations);
     }
 
     /**
@@ -239,23 +238,38 @@ public class PathOptimizer {
      * @return
      */
     public List<Planet> computeRiskyPlanets(Map<String, List<Integer>> empireLocations, List<Planet> path) {
-        List<Planet> commonElements = new ArrayList<>();
+        List<Planet> riskyPlanets = new ArrayList<>();
         for (Planet planet : path) {
             if (empireLocations.containsKey(planet.getName()) && empireLocations.get(planet.getName()).contains(planet.getDay())) {
-                commonElements.add(planet);
+                riskyPlanets.add(planet);
             }
         }
-        if (isBetterPath(commonElements, path)) {
-            this.minRiskyPlanets = commonElements.size();
+        if (isBetterPath(riskyPlanets, path)) {
+            this.minRiskyPlanets = riskyPlanets.size();
             this.bestPath = new ArrayList<>(path.size());
             for (Planet planet : path) {
-                this.bestPath.add(planet.deepCopy());
+                Planet copy = planet.deepCopy();
+                this.bestPath.add(copy);
+                checkAndFlagRiskyPlanet(riskyPlanets, copy);
             }
             Planet arrivalPlanet = this.bestPath.get(this.bestPath.size()-1);
             logger.info("[{}] is the best path so far as it has [{}] risky positions and arrives on [{}] on Day [{}].",
                     this.bestPath, this.minRiskyPlanets, arrivalPlanet.getName(), arrivalPlanet.getDay());
         }
-        return commonElements;
+        return riskyPlanets;
+    }
+
+    /**
+     * This methods checks if the current planet is among the ones the bounty hunters will be visiting
+     * @param riskyPlanets
+     * @param planet
+     */
+    private void checkAndFlagRiskyPlanet(List<Planet> riskyPlanets, Planet planet) {
+        for(Planet riskyPlanet: riskyPlanets) {
+            if (Objects.equals(planet.getName(), riskyPlanet.getName()) && Objects.equals(planet.getDay(), riskyPlanet.getDay())) {
+                planet.setRisky(true);
+            }
+        }
     }
 
     /**
@@ -276,7 +290,7 @@ public class PathOptimizer {
     /**
      * Calculates the success probability of the mission using the minimal number of risky planets
      *
-     * @return
+     * @return success probability
      */
     public double calculateSuccessProbability() {
         double sum = 0;
@@ -301,7 +315,7 @@ public class PathOptimizer {
         missionResultModel.setMissionPath(null);
         if (!successfulPaths.isEmpty()) {
             for (List<Planet> path : successfulPaths) {
-                Double pathSuccessProbability = computePathSuccessProbability(path, empireModel, empireLocations);
+                double pathSuccessProbability = computePathSuccessProbability(path, empireModel, empireLocations);
                 if (pathSuccessProbability > missionResultModel.getMissionSuccessProbability()) {
                     missionResultModel.setMissionSuccessProbability(pathSuccessProbability);
                 }
@@ -333,7 +347,7 @@ public class PathOptimizer {
             // Refuel sooner at the Planet placed at index i
             swapRefuelStep(path, refuelPlanetIndex, i);
             // Check risky planets and days when bounty hunters might be present
-            computeRiskyPlanets(empireLocations, path).size();
+            computeRiskyPlanets(empireLocations, path);
             // Wait for more days at each location (from 1 to spareDays for each time in every planet)
             delayAllRoutes(path, empireLocations, spareDays);
             // Refuel sooner for earlier refuel points while taking into account the current refuel swap
@@ -363,7 +377,7 @@ public class PathOptimizer {
                     path.get(j).setDay(path.get(j).getDay() + 1);
                 }
                 path.get(i).setDelay(day);
-                computeRiskyPlanets(empireLocations, path).size();
+                computeRiskyPlanets(empireLocations, path);
             }
 
             // As explained above, the loop here starts from 1 because the departure planet should always be on Day 0
@@ -452,16 +466,8 @@ public class PathOptimizer {
         }
     }
 
-    public Integer getMinRiskyPlanets() {
-        return minRiskyPlanets;
-    }
-
     public void setMinRiskyPlanets(Integer minRiskyPlanets) {
         this.minRiskyPlanets = minRiskyPlanets;
-    }
-
-    public List<Planet> getBestPath() {
-        return bestPath;
     }
 
     public void setBestPath(List<Planet> bestPath) {

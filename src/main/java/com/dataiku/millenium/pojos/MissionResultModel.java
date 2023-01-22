@@ -11,6 +11,8 @@ public class MissionResultModel {
 
     private double missionSuccessProbability;
     private List<Planet> missionPath;
+    private List<Planet> riskyPlanets;
+    private List<String> errors;
 
     public double getMissionSuccessProbability() {
         return missionSuccessProbability;
@@ -26,5 +28,21 @@ public class MissionResultModel {
 
     public void setMissionPath(List<Planet> missionPath) {
         this.missionPath = missionPath;
+    }
+
+    public List<Planet> getRiskyPlanets() {
+        return riskyPlanets;
+    }
+
+    public void setRiskyPlanets(List<Planet> riskyPlanets) {
+        this.riskyPlanets = riskyPlanets;
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 }
