@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { missionDataVar } from '../../../reactivities/reactiveVariables';
 import { GraphView } from 'react-digraph';
-import GraphUtil from '../../../utils/GraphUtil';
-import RoutesService from '../../../services/RoutesService';
-import ComponentsUtils from '../../../utils/ComponentsUtils';
 import { Skeleton } from "@mui/material";
+import GraphUtil from '../../../utils/GraphUtil';
+import { missionDataVar } from "../../../reactivities/reactiveVariables";
+import ComponentsUtils from '../../../utils/ComponentsUtils';
+import RoutesService from '../../../services/RoutesService';
 
 const GraphConfig = {
     NodeTypes: {
@@ -13,12 +13,12 @@ const GraphConfig = {
             shapeId: "#planet", // relates to the type property of a node
             shape: (
                 <symbol viewBox="0 0 50 50" id="planet" key="0">
-                    <circle cx="25" cy="25" r="20"></circle>
+                    <circle cx="25" cy="25" r="20" style={{ fill: 'white' }}></circle>
                 </symbol>
             )
         },
         pathPlanet: { // required to show planets
-            typeText: "Path Planet",
+            typeText: "Route Planet",
             shapeId: "#pathPlanet", // relates to the type property of a node
             shape: (
                 <symbol viewBox="0 0 50 50" id="pathPlanet" key="0">
@@ -70,44 +70,56 @@ const NODE_KEY = "id"       // Allows D3 to correctly update DOM
 
 export default class RoutesGrap extends Component {
 
+
+
     constructor(props) {
         super(props);
 
         this.state = {
-            graph: {},
-            selected: {}
+            selected: {},
+            graphData: {}
+        }
+
+    }
+
+    async fetchMissionDataAndComputeGraph() {
+        try {
+            ComponentsUtils.toggleLoadingOverlay(true);
+            const missionData = await new RoutesService().getMissionData();
+            const missionGraph = GraphUtil.computeGraphData(missionData);
+            missionDataVar({
+                departure: missionData.departure,
+                arrival: missionData.arrival
+            });
+            const graphData = await GraphUtil.computeMissionPathGraphData(this.props.missionPath, missionGraph);
+            this.setState({ graphData: graphData });
+            ComponentsUtils.toggleLoadingOverlay(false);
+        } catch (error) {
+            console.error(error);
+            ComponentsUtils.displayToastMessage(true, "error", "An error happened during mission data retrieval ! Please click on regenerate graph or contact support.", false);
+            ComponentsUtils.toggleLoadingOverlay(false);
         }
     }
 
     async componentDidMount() {
-        try {
-            ComponentsUtils.toggleLoadingOverlay(true);
-            const missionData = await new RoutesService().getMissionData();
-            missionDataVar({
-                departure: missionData.departure,
-                arrival: missionData.arrival,
-            });
-            console.log(missionData);
-            this.setState({ graph: GraphUtil.computeGraphData(missionData) });
-            ComponentsUtils.toggleLoadingOverlay(false);
-        } catch (error) {
-            console.error(error);
-            ComponentsUtils.displayToastMessage(true, "error", "An error happened during mission data retrieval ! Please click on regenerate graph.", false);
-            ComponentsUtils.toggleLoadingOverlay(false);
+        this.fetchMissionDataAndComputeGraph();
+    }
+
+    async componentDidUpdate(prevProps) {
+        if (JSON.stringify(prevProps.missionPath) !== JSON.stringify(this.props.missionPath)) {
+            this.fetchMissionDataAndComputeGraph();
         }
     }
 
-    /* Define custom graph editing methods here */
-
     render() {
-        const { edges, nodes } = GraphUtil.computeMissionPathGraphData(this.props.missionPath, this.state.graph);
+        const { edges, nodes } = this.state.graphData;
         const selected = this.state.selected;
 
         const NodeTypes = GraphConfig.NodeTypes;
         const NodeSubtypes = GraphConfig.NodeSubtypes;
         const EdgeTypes = GraphConfig.EdgeTypes;
 
-        if (nodes) {
+        if (nodes && nodes.length > 0) {
             return (
                 <div id='graph' style={{ height: '500px', width: '100%' }}>
                     <GraphView ref='GraphView'
@@ -119,8 +131,8 @@ export default class RoutesGrap extends Component {
                         nodeSubtypes={NodeSubtypes}
                         edgeTypes={EdgeTypes}
                         edgeArrowSize={1}
-                        allowMultiselect={false} // true by default, set to false to disable multi select.
-                        showGraphControls={false}
+                        allowMultiselect={false}
+                        showGraphControls={true}
                         readOnly={true}
                     />
                 </div>

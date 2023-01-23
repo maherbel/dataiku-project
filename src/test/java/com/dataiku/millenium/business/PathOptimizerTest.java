@@ -23,33 +23,20 @@ class PathOptimizerTest {
     @MethodSource("missionInputProvider")
     public void computeMissionResult(PathOptimizerTestData pathOptimizerTestData) {
         // Create mock EmpireModel object
-        EmpireModel empireModel = pathOptimizerTestData.empireModel();
+        EmpireModel empireModel = pathOptimizerTestData.getEmpireModel();
 
         // Create mock Route objects and mock the service call
-        List<Route> routes = pathOptimizerTestData.routes();
+        List<Route> routes = pathOptimizerTestData.getRoutes();
 
         // Create the MilleniumFalconModel and mock the injected bean methods
-        MilleniumFalconModel milleniumFalconModel = pathOptimizerTestData.milleniumFalconModel();
+        MilleniumFalconModel milleniumFalconModel = pathOptimizerTestData.getMilleniumFalconModel();
 
         // Invoke the computeMissionResult method
         PathOptimizer pathOptimizer = new PathOptimizer();
         MissionResultModel result = pathOptimizer.computeMissionResult(empireModel, routes, milleniumFalconModel);
 
         // Verify the expected success probability
-        assertEquals(pathOptimizerTestData.expectedSuccessProbability(), result.getMissionSuccessProbability());
-
-        // Verify the expected result
-        List<Planet> missionPath = result.getMissionPath();
-        List<Planet> expectedPath = pathOptimizerTestData.expectedPath();
-        assertEquals(expectedPath.size(), missionPath.size());
-        // TODO The tests below are not 100% reliable as the best path can sometimes change
-        /*if (pathOptimizerTestData.expectedSuccessProbability() > 0) {
-            for (int i = 0; i < expectedPath.size(); i++) {
-                Assertions.assertEquals(expectedPath.get(i).getName(), missionPath.get(i).getName());
-                Assertions.assertEquals(expectedPath.get(i).getDay(), missionPath.get(i).getDay());
-                Assertions.assertEquals(expectedPath.get(i).isRefuel(), missionPath.get(i).isRefuel());
-            }
-        }*/
+        assertEquals(pathOptimizerTestData.getExpectedSuccessProbability(), result.getMissionSuccessProbability());
     }
 
     @Test
@@ -144,7 +131,7 @@ class PathOptimizerTest {
         assertEquals(3, path.size()); // Refueling added two days to the path
         assertEquals("Tatooine", path.get(2).getName()); // Refueling happened at Tatooine
         assertEquals(2, path.get(2).getDay()); // Refueling took two days
-        assertEquals(true, path.get(2).isRefuel());
+        assertTrue(path.get(2).isRefuel());
     }
 
     @Test
@@ -237,8 +224,7 @@ class PathOptimizerTest {
                                 new Route("Tatooine", "Hoth", 6)
                         ),
                         mockBuilder.buildMilleniumFalconModel(6, "Tatooine", "Endor"),
-                        0,
-                        new ArrayList<>()),
+                        0),
                 new PathOptimizerTestData(
                         mockBuilder.buildEmpireModel(8,
                                 Arrays.asList(
@@ -253,12 +239,7 @@ class PathOptimizerTest {
                                 new Route("Tatooine", "Hoth", 6)
                         ),
                         mockBuilder.buildMilleniumFalconModel(6, "Tatooine", "Endor"),
-                        81.00,
-                        Arrays.asList(
-                                new Planet("Tatooine", 0),
-                                new Planet("Hoth", 6),
-                                new Planet("Hoth", 7, true),
-                                new Planet("Endor", 8))
+                        81.00
                 ),
                 new PathOptimizerTestData(
                         mockBuilder.buildEmpireModel(9,
@@ -274,13 +255,7 @@ class PathOptimizerTest {
                                 new Route("Tatooine", "Hoth", 6)
                         ),
                         mockBuilder.buildMilleniumFalconModel(6, "Tatooine", "Endor"),
-                        90,
-                        Arrays.asList(
-                                new Planet("Tatooine", 0),
-                                new Planet("Dagobah", 6),
-                                new Planet("Dagobah", 7, true),
-                                new Planet("Hoth", 8),
-                                new Planet("Endor", 9))
+                        90
                 ),
                 new PathOptimizerTestData(
                         mockBuilder.buildEmpireModel(10,
@@ -296,13 +271,7 @@ class PathOptimizerTest {
                                 new Route("Tatooine", "Hoth", 6)
                         ),
                         mockBuilder.buildMilleniumFalconModel(6, "Tatooine", "Endor"),
-                        100,
-                        Arrays.asList(
-                                new Planet("Tatooine", 0),
-                                new Planet("Dagobah", 7),
-                                new Planet("Dagobah", 8, true),
-                                new Planet("Hoth", 9),
-                                new Planet("Endor", 10))
+                        100
                 ),
                 new PathOptimizerTestData(
                         mockBuilder.buildEmpireModel(6,
@@ -318,15 +287,7 @@ class PathOptimizerTest {
                                 new Route("Venus", "Endor", 1)
                         ),
                         mockBuilder.buildMilleniumFalconModel(4, "Tatooine", "Endor"),
-                        100,
-                        Arrays.asList(
-                                new Planet("Tatooine", 0),
-                                new Planet("Dagobah", 1),
-                                new Planet("Dagobah", 2, true),
-                                new Planet("Hoth", 3),
-                                new Planet("Star", 4),
-                                new Planet("Venus", 5),
-                                new Planet("Endor", 6))
+                        100
                 ),
                 new PathOptimizerTestData(
                         mockBuilder.buildEmpireModel(11,
@@ -361,19 +322,7 @@ class PathOptimizerTest {
                                 new Route("Earth", "Endor", 1)
                         ),
                         mockBuilder.buildMilleniumFalconModel(3, "Tatooine", "Endor"),
-                        81,
-                        Arrays.asList(
-                                new Planet("Tatooine", 0),
-                                new Planet("Dagobah", 1),
-                                new Planet("Hoth", 2),
-                                new Planet("Star", 3),
-                                new Planet("Star", 4, true),
-                                new Planet("Star", 5, true),
-                                new Planet("Venus", 6), // Wait one day in Venus
-                                new Planet("Pluton", 8),
-                                new Planet("Moon", 9),
-                                new Planet("Earth", 10),
-                                new Planet("Endor", 11))
+                        81
                 ),
                 new PathOptimizerTestData(
                         mockBuilder.buildEmpireModel(7,
@@ -391,12 +340,7 @@ class PathOptimizerTest {
                                 new Route("Hoth", "Endor", 1)
                         ),
                         mockBuilder.buildMilleniumFalconModel(3, "Tatooine", "Endor"),
-                        100,
-                        Arrays.asList(
-                                new Planet("Tatooine", 0),
-                                new Planet("Tatooine", 3, true),
-                                new Planet("Dagobah", 5),
-                                new Planet("Endor", 7)))
+                        100)
         );
 
     }

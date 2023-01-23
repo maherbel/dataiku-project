@@ -28,7 +28,7 @@ const UploadZone = () => {
         } catch (error) {
           console.error(error);
           ComponentsUtils.toggleLoadingOverlay(false);
-          ComponentsUtils.displayToastMessage(true, "error", "An error happened during the file upload !");
+          ComponentsUtils.displayToastMessage(true, "error", "An error happened during the file upload ! Please try another file or contact support.");
         }
       };
       reader.readAsText(file);

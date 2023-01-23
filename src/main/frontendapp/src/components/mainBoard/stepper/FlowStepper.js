@@ -21,7 +21,7 @@ const steps = [
   {
     label: `Instructions to use the Falcon mission's dashboard.`,
     description:
-      `The mission result are now computed, if there is at least one possible route given the autonomy, countdown, etc.. you'll be provided with further details on the dashboard.
+      `The mission result is now computed, if there is at least one possible route given the autonomy, countdown, etc.. you'll be provided with further details on the dashboard.
       In fact, you can check on the graph the optimal path as it will start from departure/green and go through planets/yellow (travel time is the edge's weight) until it arrives to the destination/blue.
       Also, the mission path steps will be displayed, with extra informations such as refueling, delaying a travel (from a planet to another) and risky positions (where bounty hunters are present).
       You can upload another file to compute another result or you can click on the button reset below to reset the dashboard.`,

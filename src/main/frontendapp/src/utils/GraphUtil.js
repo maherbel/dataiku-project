@@ -48,10 +48,11 @@ const GraphUtil = {
             edges: edges
         };
     },
-    computeMissionPathGraphData(missionPath, graph) {
-        if (!missionPath || missionPath.length === 0) return graph;
+    async computeMissionPathGraphData(missionPath, missionGraph) {
+        if (!missionPath || missionPath.length === 0) return missionGraph;
+        this.resetGraphDataType(missionGraph);
         const pathEdges = [];
-        const nodeTitles = new Map(graph.nodes.map((node, id) => [node.title, id + 1]));
+        const nodeTitles = new Map(missionGraph.nodes.map((node, id) => [node.title, id + 1]));
         for (let i = 0; i < missionPath.length - 1; i++) {
             pathEdges.push({
                 source: nodeTitles.get(missionPath[i].planet),
@@ -61,10 +62,11 @@ const GraphUtil = {
                 delay: missionPath[i + 1].delay
             });
         }
-        const planetEdges = graph.edges;
+        const planetEdges = missionGraph.edges;
+        const planets = missionGraph.nodes;
         // Create a map of source/target from planetEdges and nodes
         const edgeByRoute = new Map(planetEdges.map(edge => [`${edge.source}-${edge.target}`, edge]));
-        const planetById = new Map(graph.nodes.map(planet => [planet.id, planet]));
+        const planetById = new Map(planets.map(planet => [planet.id, planet]));
         // Iterate over pathObjects array
         pathEdges.forEach(pathEdge => {
             // check if the source/target of the current object is already in planetEdges
@@ -80,11 +82,19 @@ const GraphUtil = {
         const srcTarget = `${pathEdgeSource}-${pathEdgeTarget}`;
         if (edgeByRoute.has(srcTarget)) {
             edgeByRoute.set(srcTarget, { ...edgeByRoute.get(srcTarget), type: 'missionPathEdge' });
-            if (this.isPlanetDepartureOrArrival(planetById.get(pathEdgeSource))) planetById.get(pathEdgeSource).type = 'pathPlanet';
-            if (this.isPlanetDepartureOrArrival(planetById.get(pathEdgeTarget))) planetById.get(pathEdgeTarget).type = 'pathPlanet';
+            if (this.isNotDepartureOrArrival(planetById.get(pathEdgeSource))) planetById.get(pathEdgeSource).type = 'pathPlanet';
+            if (this.isNotDepartureOrArrival(planetById.get(pathEdgeTarget))) planetById.get(pathEdgeTarget).type = 'pathPlanet';
         }
     },
-    isPlanetDepartureOrArrival(planet) {
+    resetGraphDataType(graph) {
+        if (graph && graph.nodes && graph.nodes.length > 0) {
+            graph.nodes.filter(node => node.type === 'pathPlanet').forEach(node => node.type = 'planet');
+        }
+        if (graph && graph.edges && graph.edges.length > 0) {
+            graph.edges.filter(edge => edge.type === 'missionPathEdge').forEach(edge => edge.type = 'planetEdge');
+        }
+    },
+    isNotDepartureOrArrival(planet) {
         return ['departure', 'arrival'].indexOf(planet.type) === -1;
     },
     buildMissionPathSteps(missionPath, departure, arrival) {

@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
@@ -68,7 +69,7 @@ public class AppConfig {
         // inputStream to read the file from resources and disk
         InputStream inputStream;
         if (Paths.get(milleniumFalconJsonFilePath).isAbsolute()) {
-            inputStream = new FileInputStream(milleniumFalconJsonFilePath);
+            inputStream = Files.newInputStream(Paths.get(milleniumFalconJsonFilePath));
         } else {
             Resource resource = new ClassPathResource(milleniumFalconJsonFilePath);
             inputStream = resource.getInputStream();

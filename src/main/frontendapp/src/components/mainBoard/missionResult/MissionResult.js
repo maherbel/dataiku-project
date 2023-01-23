@@ -74,6 +74,10 @@ const MissionResult = () => {
                 }
             </Box>
         );
+    } else {
+        return (
+            <></>
+        );
     }
 };
 

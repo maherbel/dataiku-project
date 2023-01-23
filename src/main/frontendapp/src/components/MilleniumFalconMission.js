@@ -29,7 +29,7 @@ const MilleniumFalconMission = () => {
           ComponentsUtils.toggleLoadingOverlay(false);
         } catch (error) {
           console.error(error);
-          ComponentsUtils.displayToastMessage(true, "error", "An error happened during the mission result compute ! Please click on regenerate graph.");
+          ComponentsUtils.displayToastMessage(true, "error", "An error happened during the mission result compute ! Please click on regenerate graph or contact support.");
           ComponentsUtils.toggleLoadingOverlay(false);
         }
       }

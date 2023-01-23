@@ -8,7 +8,6 @@ import { useReactiveVar } from '@apollo/client';
 import { milleniumMissionResultVar } from '../../reactivities/reactiveVariables';
 
 const MainBoard = () => {
-
   const { missionPath } = useReactiveVar(milleniumMissionResultVar);
 
   return (

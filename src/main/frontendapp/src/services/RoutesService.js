@@ -1,4 +1,5 @@
 import axios from "axios";
+import { missionDataVar } from "../reactivities/reactiveVariables";
 
 export default class RoutesService {
     async getMissionResultSuccess(jsonContent) {
@@ -20,6 +21,10 @@ export default class RoutesService {
         try {
             const missionData = await axios.get('/missionData');
             if (missionData && missionData.data) {
+                missionDataVar({
+                    departure: missionData.departure,
+                    arrival: missionData.arrival
+                });
                 return this.buildMissionData(missionData.data);
             }
         } catch (error) {
