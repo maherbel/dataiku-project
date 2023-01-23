@@ -1,5 +1,6 @@
 package com.dataiku.millenium.cli;
 
+import com.dataiku.millenium.exceptions.ComputeMissionResultException;
 import com.dataiku.millenium.pojos.EmpireModel;
 import com.dataiku.millenium.pojos.MilleniumFalconModel;
 import com.dataiku.millenium.pojos.MissionResultModel;
@@ -70,13 +71,18 @@ public class CommandLineRunner implements ApplicationRunner, ApplicationContextA
     @Override
     public void run(ApplicationArguments args) {
         if (this.empireModel != null) {
-            logger.info("Computing mission result from CLI...");
-            MissionResultModel result = routeService.computeMissionResult(this.empireModel);
-            // Log the mission result
-            logger.info("****************** Results ******************");
-            logger.info("Mission Success Probability: {}", result.getMissionSuccessProbability());
-            logger.info("*********************************************");
-            SpringApplication.exit(applicationContext, () -> 0);
+            try {
+                logger.info("Computing mission result from CLI..");
+                MissionResultModel result = routeService.computeMissionResult(this.empireModel);
+                // Log the mission result
+                logger.info("****************** Results ******************");
+                logger.info("Mission Success Probability: {}", result.getMissionSuccessProbability());
+                logger.info("*********************************************");
+            } catch (Exception | ComputeMissionResultException e) {
+                logger.error("Unexpected error when computing result from CLI..", e);
+            } finally {
+                SpringApplication.exit(applicationContext, () -> 0);
+            }
         } else {
             logger.warn("Empire model is null, CLI not available.");
         }

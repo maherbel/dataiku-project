@@ -5,7 +5,7 @@ package com.dataiku.millenium.exceptions;
  * the data source that is not supported.
  * The supported protocols are "file" and "jar".
  */
-public class DataSourceFormatNotSupported extends RuntimeException {
+public class DataSourceFormatNotSupported extends Throwable {
 
     public DataSourceFormatNotSupported(String message) {
         super(message);

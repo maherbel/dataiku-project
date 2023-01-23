@@ -3,11 +3,14 @@ package com.dataiku.millenium.controllers;
 import com.dataiku.millenium.exceptions.ComputeMissionResultException;
 import com.dataiku.millenium.exceptions.MissionDataRetrievalException;
 import com.dataiku.millenium.pojos.EmpireModel;
+import com.dataiku.millenium.pojos.ErrorModel;
 import com.dataiku.millenium.pojos.MissionDataModel;
 import com.dataiku.millenium.pojos.MissionResultModel;
 import com.dataiku.millenium.services.RouteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -55,9 +58,16 @@ public class RouteController {
      * @return A MissionDataModel
      */
     @GetMapping("/missionData")
-    public MissionDataModel getMissionData() throws MissionDataRetrievalException {
+    public ResponseEntity<Object> getMissionData() {
         logger.info("Retrieving mission data.");
-        return routeService.getMissionData();
+        try {
+            logger.info("Retrieving mission data.");
+            return ResponseEntity.ok(routeService.getMissionData());
+        } catch (Exception | MissionDataRetrievalException e) {
+            logger.error("An error happened during the mission data retrieval.", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorModel(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value()));
+        }
     }
 
     /**
@@ -68,15 +78,14 @@ public class RouteController {
      * @return A MissionResultModel containing the mission success probability and the relative Planets path if any
      */
     @PostMapping(value = "/missionResultSuccess", consumes = "application/json", produces = "application/json")
-    public MissionResultModel computeMilleniumFalconMission(@RequestBody EmpireModel empireModel) {
+    public ResponseEntity<Object> computeMilleniumFalconMission(@RequestBody EmpireModel empireModel) {
         try {
             logger.info("Computing mission success probability.");
-            return routeService.computeMissionResult(empireModel);
-        } catch (ComputeMissionResultException e) {
-            logger.error("An error happened during the compute..", e);
-            MissionResultModel missionResultModel = new MissionResultModel();
-            missionResultModel.getErrors().add("An error happened during the mission result compute.");
-            return missionResultModel;
+            return ResponseEntity.ok(routeService.computeMissionResult(empireModel));
+        } catch (Exception | ComputeMissionResultException e) {
+            logger.error("An error happened during the mission result compute.", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorModel(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value()));
         }
     }
 }
