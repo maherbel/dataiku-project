@@ -10,7 +10,7 @@ apply plugin: 'org.springframework.boot'
 
 group = 'com.dataiku'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '8'
 
 repositories {
 	mavenCentral()
@@ -35,13 +35,12 @@ tasks.named('test') {
 }
 
 task frontend(type: Exec) {
-    commandLine 'npm', 'run', 'build'
+    commandLine 'yarn', 'build'
     workingDir 'src/main/frontendapp'
 }
 
 task copyFrontend(type: Copy) {
 	from 'src/main/frontendapp/build'
-	//from fileTree(dir: 'src/main/frontendapp/build', include: ['**/*', '!**/*.map'])
 	into 'src/main/resources/static'
 }
 
