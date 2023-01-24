@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "e34ee73c-0caf-4967-a02b-9e402a897940",
+		"name": "Millenium API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Healthcheck (GET)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/healthcheck",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Example 1 (0%)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"countdown\": 7, \n  \"bounty_hunters\": [\n    {\"planet\": \"Hoth\", \"day\": 6 }, \n    {\"planet\": \"Hoth\", \"day\": 7 },\n    {\"planet\": \"Hoth\", \"day\": 8 }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/missionResultSuccess",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"missionResultSuccess"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Example 2 (81%)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"countdown\": 8, \n  \"bounty_hunters\": [\n    {\"planet\": \"Hoth\", \"day\": 6 }, \n    {\"planet\": \"Hoth\", \"day\": 7 },\n    {\"planet\": \"Hoth\", \"day\": 8 }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/missionResultSuccess",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"missionResultSuccess"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Example 3 (90%)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"countdown\": 9, \n  \"bounty_hunters\": [\n    {\"planet\": \"Hoth\", \"day\": 6 }, \n    {\"planet\": \"Hoth\", \"day\": 7 },\n    {\"planet\": \"Hoth\", \"day\": 8 }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/missionResultSuccess",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"missionResultSuccess"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Example 4 (100%)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"countdown\": 10, \n  \"bounty_hunters\": [\n    {\"planet\": \"Hoth\", \"day\": 6 }, \n    {\"planet\": \"Hoth\", \"day\": 7 },\n    {\"planet\": \"Hoth\", \"day\": 8 }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/missionResultSuccess",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"missionResultSuccess"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mission Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/missionData",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"missionData"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
