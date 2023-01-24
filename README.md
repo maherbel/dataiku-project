@@ -11,10 +11,9 @@ To be able to compile/run/build the project, you must have:
 
 ## How to Build/Deploy
 1) Open your favourite terminal and navigate to the project's root folder.
-2) Type `gradle clean` to get rid of any remaining temp build folders/files.
-2) Type `gradle build` to generate the WAR "**millenium-0.0.1-SNAPSHOT.war**" through multiple gradle tasks.
+2) Type `gradle build` to cleanup any temp files and generate the WAR "**millenium-0.0.1-SNAPSHOT.war**" through multiple gradle tasks.
 3) Navigate to the folder "**build/libs**" and copy the generated WAR in the folder "**scripts**"
-4) Navigate to the folder "**scripts**" and type `./install-alias.sh` to generate the launch script called "**give-me-the-odds.sh**".
+4) Navigate to the folder "**scripts**" and type [`./install-alias.sh`](https://github.com/maherbel/dataiku-project/blob/main/scripts/install-alias.sh) to generate the launch script called "**give-me-the-odds.sh**".
 
 ## How to use the executable
 
@@ -23,7 +22,7 @@ Once **give-me-the-odds.sh** have been generated, you can open the terminal and 
 ### Deploy App with 0 parameters
 
 Deploys the App locally and can be accessed at [http://localhost:8080](http://localhost:8080).
-If you don't specify any parameter, the [config file millenium-falcon.json](https://github.com/maherbel/dataiku-project/blob/readme-update/src/main/resources/config/millennium-falcon.json) will be used automatically.
+If you don't specify any parameter, the default config file [config/millenium-falcon.json](https://github.com/maherbel/dataiku-project/blob/readme-update/src/main/resources/config/millennium-falcon.json) will be used automatically.
 
 ### Deploy App with 1 parameter
 
