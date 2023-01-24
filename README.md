@@ -144,3 +144,12 @@ Compute the mission's success probability given the empire data (passed as body)
 `/missionData` (GET)
 
 Fetches the current mission's data (exctracted from the millenium falcon config file).
+
+
+### Missing features to roll to PROD
+- Dockerize the app to be able to deploy it on the cloud.
+- Plug the logs (backend/frontend) to a log aggregator such as Splunk/Datadog.
+- Track the technical performance of the App especially the TP99, TP90, TP50 of the endpoint `/missionResultSuccess` and setup alerts to be aware if at some point the performance is degraded below a certain threshold.
+- Add user metrics to have a better understanding of the feature usage/success/failure with a platform like Amplitude.
+- Add unit tests and Cypress tests for UI code.
+- Enhance the logging to the UI level.
