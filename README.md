@@ -152,4 +152,6 @@ Fetches the current mission's data (exctracted from the millenium falcon config 
 - Track the technical performance of the App especially the TP99, TP90, TP50 of the endpoint `/missionResultSuccess` and setup alerts to be aware if at some point the performance is degraded below a certain threshold.
 - Add user metrics to have a better understanding of the feature usage/success/failure with a platform like Amplitude.
 - Add unit tests and Cypress tests for UI code.
-- Enhance the logging to the UI level.
+- Audit the component [GraphUtil.js](https://github.com/maherbel/dataiku-project/blob/main/src/main/frontendapp/src/utils/GraphUtil.js) and move if necessary the heavy computation code to the backend.
+- Enhance the logging to the UI level with a proper logger (using a dedicated Util).
+- Add coverage on the Java code using Jacoco.
