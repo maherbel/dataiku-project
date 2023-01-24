@@ -106,19 +106,19 @@ const GraphUtil = {
             const { planet, day, refuel, delay, risky } = pathStep;
             let stepDescription = '';
             if (planet !== departure && planet !== arrival && !refuel) {
-                stepDescription = 'Day [' + day + ']: Traveled to ' + planet + ' in ' + (day - missionPath[stepNum-1].day) + ' day(s)';
+                stepDescription = 'Day [' + day + ']: Travel to ' + planet + ' in ' + (day - missionPath[stepNum-1].day) + ' day(s)';
             } else if (planet === departure) {
                 stepDescription = 'Day [' + day + ']: Departure from ' + planet;
             } else if (planet === arrival) {
                 stepDescription = 'Day [' + day + ']: Arrival to destination ' + planet + ' in ' + (day - missionPath[stepNum-1].day) + ' day(s)';
             } else if (refuel) {
-                stepDescription = 'Day [' + day + ']: Staying 1 extra day on ' + planet + ' for a refuel';
+                stepDescription = 'Day [' + day + ']: Refuel on ' + planet;
             }
             if (delay) {
                 stepDescription = stepDescription + ' with a delay of ' + delay + ' day(s)';
             }
             if (risky) {
-                stepDescription = stepDescription + ` => Risky position as the bounty hunters are in ` + planet + ` on day ` + day + ` !`;
+                stepDescription = stepDescription + ` => 10% chance of being captured on day ` + day + ` on ` + planet + ` !`;
             }
             stepDescription = stepDescription + '.';
             steps.push(stepDescription);
