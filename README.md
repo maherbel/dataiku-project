@@ -11,6 +11,7 @@ To be able to compile/run/build the project, you must have:
 
 ## How to Build/Deploy
 1) Open your favourite terminal and navigate to the project's root folder.
+2) Type `gradle clean`to get rid of any remaining temp build folders/files.
 2) Type `gradle build` to generate the WAR "**millenium-0.0.1-SNAPSHOT.war**" through multiple gradle tasks.
 3) Navigate to the folder "**build/libs**" and copy the generated WAR in the folder "**scripts**"
 4) Navigate to the folder "**scripts**" and type `./install-alias.sh` to generate the executable called "**give-me-the-odds.sh**".
