@@ -132,7 +132,7 @@ So please refer to these if you need more details on the result computation.
 
 You can use the command below to stream the application log:
 ```
-tail -f application.log
+tail -f /PATH_TO_THE_LOGS/application.log
 ```
 
 #### Rest API
