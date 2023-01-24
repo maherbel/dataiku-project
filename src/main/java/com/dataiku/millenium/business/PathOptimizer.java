@@ -54,10 +54,6 @@ public class PathOptimizer {
     }
 
     /**
-     * Utils Code Block
-     */
-
-    /**
      * This method computes the neighbours for each planet in a graph based on the given routes.
      * It returns a map where the key is the origin planet and the value is a map of its neighbours.
      * The inner map contains the destination planet as the key and the travel time as the value.
@@ -77,7 +73,7 @@ public class PathOptimizer {
             planetHelper.computeIfAbsent(dest, k -> new Planet(dest));
             Planet originPlanet = planetHelper.get(origin);
             Planet destPlanet = planetHelper.get(dest);
-            /**
+            /*
              * The two following lines are responsible for adding the neighbours in each Map
              * relatively to the route's origin/dest/travelTime to make sure the bidirectional edge is correctly added
              * Also, if there is multiple routes between the same two nodes, the one with the smallest travelTime will be added
@@ -105,15 +101,6 @@ public class PathOptimizer {
     }
 
     /**
-     * Utils Code Block
-     */
-
-
-    /**
-     * Path Finding Code Block
-     */
-
-    /**
      * Computes all the possible paths from a departure planet to an arrival planet. This means that the Falcon is able
      * to get to the arrival planet before/at the countdown with a success probability greater than 0
      * The method uses a DFS approach to traverse all possible paths while keeping a Visited Set to avoid cycles
@@ -127,10 +114,10 @@ public class PathOptimizer {
      */
     public List<List<Planet>> computePaths(EmpireModel empireModel, Map<Planet, Map<Planet, Integer>> neighbours, Map<String, Planet> planetHelper, MilleniumFalconModel milleniumFalconModel) {
         // Get the needed infos about the mission
-        Integer autonomy = milleniumFalconModel.getAutonomy();
+        int autonomy = milleniumFalconModel.getAutonomy();
         String departure = milleniumFalconModel.getDeparture();
         String arrival = milleniumFalconModel.getArrival();
-        Integer countdown = empireModel.getCountdown();
+        int countdown = empireModel.getCountdown();
         // List for storing the paths
         List<List<Planet>> paths = new ArrayList<>();
         // Set for storing the visited nodes
@@ -143,7 +130,12 @@ public class PathOptimizer {
         // Call the recursive DFS traversal method
         visitNeighbours(countdown, autonomy, 0, departurePlanet, departurePlanet, arrivalPlanet, new ArrayList<>(), paths, neighbours, visited, milleniumFalconModel);
         // Return all paths
-        logger.info("{} Possible paths found.", paths.size());
+        logger.info("{} Possible paths found that lead from {} to {} in {} days.", paths.size(), departure, arrival, countdown);
+        if (!paths.isEmpty()) {
+            for (List<Planet> path: paths) {
+                logger.info("{} is a possible path.", path);
+            }
+        }
         return paths;
     }
 
@@ -163,7 +155,7 @@ public class PathOptimizer {
      * @param milleniumFalconModel
      */
     public void visitNeighbours(int countdown, int autonomyLeft, int travelTime, Planet previousPlanet, Planet currentPlanet, Planet arrival, List<Planet> path, List<List<Planet>> paths, Map<Planet, Map<Planet, Integer>> neighbours, Set<String> visited, MilleniumFalconModel milleniumFalconModel) {
-        // Going to this planet will take more time than the countdown allows so we can skip it in the current path
+        // Going to this planet will take more time than the countdown allows, so we can skip it in the current path
         // This does not mean we won't go by this planet (could be there a path that allows going through this planet later)
         if (previousPlanet.getDay() + travelTime > countdown) {
             return;
@@ -260,7 +252,7 @@ public class PathOptimizer {
     }
 
     /**
-     * This methods checks if the current planet is among the ones the bounty hunters will be visiting
+     * These methods check if the current planet is among the ones the bounty hunters will be visiting
      * @param riskyPlanets
      * @param planet
      */
@@ -310,6 +302,7 @@ public class PathOptimizer {
      * @return
      */
     public MissionResultModel computeBestSuccessProbability(List<List<Planet>> successfulPaths, EmpireModel empireModel, Map<String, List<Integer>> empireLocations) {
+        logger.info("Computing the best success probability from all possible paths..");
         MissionResultModel missionResultModel = new MissionResultModel();
         missionResultModel.setMissionSuccessProbability(0);
         missionResultModel.setMissionPath(null);
@@ -417,7 +410,7 @@ public class PathOptimizer {
     }
 
     /**
-     * This methods serves a revert of the refuel swap by :
+     * These methods serve a revert of the refuel swap by :
      * - removing the current refuel planet
      * - putting back the old refuel planet
      * - update the planets in between as the day has to decrease by 1

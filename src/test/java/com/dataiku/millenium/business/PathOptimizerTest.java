@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -208,7 +207,6 @@ class PathOptimizerTest {
 
     static Stream<PathOptimizerTestData> missionInputProvider() {
         MockBuilder mockBuilder = new MockBuilder();
-        // TODO ADD EDGE CASES SUCH AS WRONG INPUT DATA, EMPTY, INCORRECT, INCOMPLETE, ETC..
         return Stream.of(
                 new PathOptimizerTestData(
                         mockBuilder.buildEmpireModel(7,

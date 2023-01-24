@@ -11,7 +11,7 @@ To be able to compile/run/build the project, you must have:
 
 ## How to Build/Deploy
 1) Open your favourite terminal and navigate to the project's root folder.
-2) Type `gradle build` to cleanup any temp files and generate the WAR "**millenium-0.0.1-SNAPSHOT.war**" through multiple gradle tasks.
+2) Type `gradle build` to clean up any temp files and generate the WAR "**millenium-0.0.1-SNAPSHOT.war**" through multiple gradle tasks.
 3) Navigate to the folder "**build/libs**" and copy the generated WAR in the folder "**scripts**"
 4) Navigate to the folder "**scripts**" and type [`./install-alias.sh`](https://github.com/maherbel/dataiku-project/blob/main/scripts/install-alias.sh) to generate the launch script called "**give-me-the-odds.sh**".
 
@@ -142,7 +142,7 @@ Compute the mission's success probability given the empire data (passed as body)
 
 `/missionData` (GET)
 
-Fetches the current mission's data (exctracted from the millenium falcon config file).
+Fetches the current mission's data (extracted from the millenium falcon config file).
 
 
 ### Missing features to roll to PROD
@@ -151,6 +151,8 @@ Fetches the current mission's data (exctracted from the millenium falcon config 
 - Track the technical performance of the App especially the TP99, TP90, TP50 of the endpoint `/missionResultSuccess` and setup alerts to be aware if at some point the performance is degraded below a certain threshold.
 - Add user metrics to have a better understanding of the feature usage/success/failure with a platform like Amplitude.
 - Add unit tests and Cypress tests for UI code.
-- Audit the component [GraphUtil.js](https://github.com/maherbel/dataiku-project/blob/main/src/main/frontendapp/src/utils/GraphUtil.js) and move if necessary the heavy computation code to the backend.
 - Enhance the logging to the UI level with a proper logger (using a dedicated Util).
 - Add coverage on the Java code using Jacoco.
+- Audit the component [GraphUtil.js](https://github.com/maherbel/dataiku-project/blob/main/src/main/frontendapp/src/utils/GraphUtil.js) and move if necessary the heavy computation code to the backend.
+- Split the class [PathOptimizer.java](https://github.com/maherbel/dataiku-project/blob/main/src/main/java/com/dataiku/millenium/business/PathOptimizer.java) into multiple classes such as one to compute the possible paths, another one to compute the best path and another one to compute the final success probability. 
+
