@@ -20,12 +20,12 @@ To be able to compile/run/build the project, you must have:
 
 Once **give-me-the-odds.sh** have been generated, you can open the terminal and execute with or without paremters and you should expect the below outcomes:
 
-### `./give-me-the-odds.sh`
+### Deploy App with 0 parameters
 
 Deploys the App locally and can be accessed at [http://localhost:8080](http://localhost:8080).
 If you don't specify any parameter, the [config file millenium-falcon.json](https://github.com/maherbel/dataiku-project/blob/readme-update/src/main/resources/config/millennium-falcon.json) will be used automatically.
 
-### `./give-me-the-odds.sh param`
+### Deploy App with 1 parameter
 
 Deploys the App locally and can be accessed at [http://localhost:8080](http://localhost:8080).
 The specified parameter will be used to initialize the Millenium Falcon configuration.
@@ -39,7 +39,7 @@ The parameter can be either:
 ./give-me-the-odds.sh /ROOT_TO_EXTERNAL_CONFIG/millennium-falcon.json
 ```
 
-### `./give-me-the-odds.sh param1 param2`
+### Deploy App with 2 parameters
 
 This will deploy the CLI mode of the App, use the first/second param to load the Millenium Falcon/Empire data and compute the success probability.
 For example:
@@ -55,3 +55,5 @@ For example:
 ```
 ./give-me-the-odds.sh /ROOT_TO_EXTERNAL_CONFIG/millennium-falcon.json example1/empire.json
 ```
+
+
