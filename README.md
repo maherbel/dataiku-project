@@ -11,9 +11,11 @@ To be able to compile/run/build the project, you must have:
 
 ## How to Build/Deploy
 1) Open your favourite terminal and navigate to the project's root folder.
-2) Type `gradle build` to clean up any temp files and generate the WAR "**millenium-0.0.1-SNAPSHOT.war**" through multiple gradle tasks.
-3) Navigate to the folder "**build/libs**" and copy the generated WAR in the folder "**scripts**"
-4) Navigate to the folder "**scripts**" and type [`./install-alias.sh`](https://github.com/maherbel/dataiku-project/blob/main/scripts/install-alias.sh) to generate the launch script called "**give-me-the-odds.sh**".
+2) Type `gradle clean build` to clean up any temp files and generate the WAR "**millenium-0.0.1-SNAPSHOT.war**".
+3) Navigate to the folder "**build/libs**" and copy the generated WAR into the folder "**scripts**".
+4) Navigate to the folder "**scripts**" and type [`./install-alias.sh`](https://github.com/maherbel/dataiku-project/blob/main/scripts/install-alias.sh) to generate the launch script called `give-me-the-odds.sh`.
+
+NB: The only condition is to keep the WAR, `./install-alias.sh` and `give-me-the-odds.sh` in the same folder (be it scripts or another one).
 
 ## How to use the executable
 
