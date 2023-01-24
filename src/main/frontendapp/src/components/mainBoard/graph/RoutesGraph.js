@@ -68,24 +68,26 @@ const GraphConfig = {
 
 const NODE_KEY = "id"       // Allows D3 to correctly update DOM
 
-export default class RoutesGrap extends Component {
-
-
+export default class RoutesGraph extends Component {
 
     constructor(props) {
         super(props);
+        this.initialGraphData = {};
 
         this.state = {
             selected: {},
             graphData: {}
         }
-
     }
 
     async fetchMissionDataAndComputeGraph() {
         try {
             ComponentsUtils.toggleLoadingOverlay(true);
-            const missionData = await new RoutesService().getMissionData();
+            let missionData = this.initialGraphData;
+            if (Object.keys(missionData).length === 0) {
+                missionData = await new RoutesService().getMissionData();
+                this.initialGraphData = missionData;
+            }
             const missionGraph = GraphUtil.computeGraphData(missionData);
             missionDataVar({
                 departure: missionData.departure,
@@ -102,12 +104,12 @@ export default class RoutesGrap extends Component {
     }
 
     async componentDidMount() {
-        this.fetchMissionDataAndComputeGraph();
+        await this.fetchMissionDataAndComputeGraph();
     }
 
     async componentDidUpdate(prevProps) {
         if (JSON.stringify(prevProps.missionPath) !== JSON.stringify(this.props.missionPath)) {
-            this.fetchMissionDataAndComputeGraph();
+            await this.fetchMissionDataAndComputeGraph();
         }
     }
 

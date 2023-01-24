@@ -6,6 +6,7 @@ import FlowStepper from './stepper/FlowStepper';
 import RoutesGraph from './graph/RoutesGraph';
 import { useReactiveVar } from '@apollo/client';
 import { milleniumMissionResultVar } from '../../reactivities/reactiveVariables';
+import { Typography } from '@mui/material';
 
 const MainBoard = () => {
   const { missionPath } = useReactiveVar(milleniumMissionResultVar);
@@ -21,6 +22,9 @@ const MainBoard = () => {
         </Grid2>
         <Grid2 sx={{ width: '100%', height: '100%' }}>
           <RoutesGraph missionPath={missionPath} />
+          <Typography variant='caption' sx={{ textAlign: "left", fontWeight: "bold" }}>
+            Tip: Use the little rectangle above (on the right of zoom slider) to re-center the graph.
+          </Typography>
         </Grid2>
       </Grid2>
       <Grid2 sx={{ justifyContent: 'center', width: '30%' }}>

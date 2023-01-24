@@ -44,7 +44,7 @@ const UploadZone = () => {
         classes="drop_zone"
         label="Please upload or drop here the Empire's intercepted data."
       />
-      <Typography variant="body" sx={{ textAlign: "left", fontWeight: "bold" }}>
+      <Typography variant="caption" sx={{ textAlign: "left", fontWeight: "bold" }}>
         {file ? `Uploaded file name: ${file.name}.` : ""}
       </Typography>
     </Box>

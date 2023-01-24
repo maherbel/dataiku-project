@@ -4,7 +4,6 @@ import com.dataiku.millenium.exceptions.ComputeMissionResultException;
 import com.dataiku.millenium.pojos.EmpireModel;
 import com.dataiku.millenium.pojos.MilleniumFalconModel;
 import com.dataiku.millenium.pojos.MissionResultModel;
-import com.dataiku.millenium.pojos.Planet;
 import com.dataiku.millenium.services.RouteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +77,8 @@ public class CommandLineRunner implements ApplicationRunner, ApplicationContextA
                 logger.info("****************** Results ******************");
                 logger.info("Mission Success Probability: {}", result.getMissionSuccessProbability());
                 logger.info("*********************************************");
+
+                System.out.println(result.getMissionSuccessProbability());
             } catch (Exception | ComputeMissionResultException e) {
                 logger.error("Unexpected error when computing result from CLI..", e);
             } finally {
