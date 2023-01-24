@@ -130,6 +130,11 @@ The kind of details you can find are as below:
 ```
 So please refer to these if you need more details on the result computation.
 
+You can use the command below to stream the application log:
+```
+tail -f application.log
+```
+
 #### Rest API
 
 If you are familiar with POSTMAN, you can import the configuration file from [here](https://github.com/maherbel/dataiku-project/blob/main/Postman_API_config.json) and you'll be able to query the below endpoints:
