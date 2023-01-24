@@ -102,5 +102,45 @@ Once the `empire.json`file is uploaded, the app will compute the mission success
 
 ### CLI
 
-Whenever the app is launched using 2 parameters (please refer to the section above), the CLI mode will be enabled and the mission success probability will be printed on the console as below:
+Whenever the app is launched using 2 parameters (please refer to the section above) to load both config files, the CLI mode will be enabled and the mission success probability will be printed on the console as below:
 
+<img width="885" alt="CLI Examples" src="https://user-images.githubusercontent.com/10635526/214306163-9013d442-27fc-4414-92a4-972131b10376.png">
+
+### Logs and Rest API
+
+#### Logs
+
+Logs containing extra details on the configs, route success probability computation, etc.. are being generated on the root of the folder where the script is being launched.
+The kind of details you can find are as below:
+```
+14:29:24.365 [main] INFO  c.d.millenium.cli.CommandLineRunner - Computing mission result from CLI..
+14:29:24.435 [main] INFO  c.d.millenium.business.PathOptimizer - Compute mission result started. Departure: [Tatooine], Arrival: [Endor], Countdown: [10], Autonomy: [6]
+14:29:24.435 [main] INFO  c.d.millenium.business.PathOptimizer - 2 Possible paths found.
+14:29:24.435 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Hoth', day='6', Risky}, Planet{name='Hoth', day='7', Refuel, Risky}, Planet{name='Endor', day='8'}]] is the best path so far as it has [2] risky positions and arrives on [Endor] on Day [8].
+14:29:24.436 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Hoth', day='8', delay='2', Risky}, Planet{name='Hoth', day='9', Refuel}, Planet{name='Endor', day='10'}]] is the best path so far as it has [1] risky positions and arrives on [Endor] on Day [10].
+14:29:24.436 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='6'}, Planet{name='Dagobah', day='7', Refuel}, Planet{name='Hoth', day='8', Risky}, Planet{name='Endor', day='9'}]] is the best path so far as it has [1] risky positions and arrives on [Endor] on Day [9].
+14:29:24.436 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='7', delay='1'}, Planet{name='Dagobah', day='8', Refuel}, Planet{name='Hoth', day='9'}, Planet{name='Endor', day='10'}]] is the best path so far as it has [0] risky positions and arrives on [Endor] on Day [10].
+14:29:24.436 [main] INFO  c.d.millenium.services.RouteService - Compute mission result ended with a success probability of [100.0%].
+14:29:24.436 [main] INFO  c.d.m.aspect.MethodDurationAspect - Method computeMissionResult in class com.dataiku.millenium.services.RouteService took 70 ms
+14:29:24.436 [main] INFO  c.d.millenium.cli.CommandLineRunner - ****************** Results ******************
+14:29:24.436 [main] INFO  c.d.millenium.cli.CommandLineRunner - Mission Success Probability: 100.0
+14:29:24.436 [main] INFO  c.d.millenium.cli.CommandLineRunner - *********************************************
+
+```
+So please refer to these if you need more details on the result computation.
+
+#### Rest API
+
+If you are familiar with POSTMAN, you can import the configuration file from [here](https://github.com/maherbel/dataiku-project/blob/main/Postman_API_config.json) and you'll be able to query the below endpoints:
+
+`/healthcheck` (GET)
+
+Check that app is deployed/running.
+
+`/missionResultSuccess` (POST)
+
+Compute the mission's success probability given the empire data (passed as body).
+
+`/missionData` (GET)
+
+Fetches the current mission's data (exctracted from the millenium falcon config file).
