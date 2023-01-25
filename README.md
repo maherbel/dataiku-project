@@ -11,7 +11,7 @@ To be able to compile/run/build the project, you must have:
 
 ## How to Build/Deploy
 1) Open your favourite terminal and navigate to the [frontendapp](https://github.com/maherbel/dataiku-project/tree/main/src/main/frontendapp) folder.
-2) Type `yarn build` to build the React/JS code and create the static files under `frontend/build/static` (these will be packaged into the final WAR).
+2) Type `yarn build` to build the JS/React code which will create the static files under `frontend/build/static` (these will be packaged into the final WAR).
 3) Navigate to the project's root folder.
 4) Type `gradle clean build` to clean up any temp files and generate the WAR "**millenium-0.0.1-SNAPSHOT.war**".
 5) Navigate to the folder "**build/libs**" and copy the generated WAR into the folder "**scripts**".
