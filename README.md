@@ -109,7 +109,7 @@ Whenever the app is launched using 2 parameters (please refer to the section abo
 
 <img width="885" alt="CLI Examples" src="https://user-images.githubusercontent.com/10635526/214306163-9013d442-27fc-4414-92a4-972131b10376.png">
 
-### Logs and Rest API
+### Troubleshoot through Logs and Rest API
 
 #### Logs
 
