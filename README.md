@@ -10,10 +10,12 @@ To be able to compile/run/build the project, you must have:
 - Gradle 7.6 or higher
 
 ## How to Build/Deploy
-1) Open your favourite terminal and navigate to the project's root folder.
-2) Type `gradle clean build` to clean up any temp files and generate the WAR "**millenium-0.0.1-SNAPSHOT.war**".
-3) Navigate to the folder "**build/libs**" and copy the generated WAR into the folder "**scripts**".
-4) Navigate to the folder "**scripts**" and type [`./install-alias.sh`](https://github.com/maherbel/dataiku-project/blob/main/scripts/install-alias.sh) to generate the launch script called `give-me-the-odds.sh`.
+1) Open your favourite terminal and navigate to the [frontendapp](https://github.com/maherbel/dataiku-project/tree/main/src/main/frontendapp) folder.
+2) Type `yarn build` to build the React/JS code and create the static files under `frontend/build/static` (these will be packaged into the final WAR).
+3) Navigate to the project's root folder.
+4) Type `gradle clean build` to clean up any temp files and generate the WAR "**millenium-0.0.1-SNAPSHOT.war**".
+5) Navigate to the folder "**build/libs**" and copy the generated WAR into the folder "**scripts**".
+6) Navigate to the folder "**scripts**" and type [`./install-alias.sh`](https://github.com/maherbel/dataiku-project/blob/main/scripts/install-alias.sh) to generate the launch script called `give-me-the-odds.sh`.
 
 NB: The only condition is to keep the WAR, `./install-alias.sh` and `give-me-the-odds.sh` in the same folder (be it scripts or another one).
 
