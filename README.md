@@ -17,7 +17,7 @@ To be able to compile/run/build the project, you must have:
 5) Navigate to the folder "**build/libs**" and copy the generated WAR into the folder "**scripts**".
 6) Navigate to the folder "**scripts**" and type [`./install-alias.sh`](https://github.com/maherbel/dataiku-project/blob/main/scripts/install-alias.sh) to generate the launch script called `give-me-the-odds.sh`.
 
-NB: The only condition is to keep the WAR, `./install-alias.sh` and `give-me-the-odds.sh` in the same folder (be it scripts or another one).
+NB: The only condition is to keep the WAR, `./install-alias.sh` and `give-me-the-odds.sh` in the same folder (can be scripts or any another external folder).
 
 ## How to use the executable
 
