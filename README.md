@@ -161,7 +161,7 @@ Fetches the current mission's data (extracted from the millenium falcon config f
 - Add user metrics to have a better understanding of the feature usage/success/failure with a platform like Amplitude.
 - Add unit tests and Cypress tests for UI code.
 - Enhance the logging to the UI level with a proper logger (using a dedicated Util).
-- Add coverage on the Java code using Jacoco.
-- Audit the component [GraphUtil.js](https://github.com/maherbel/dataiku-project/blob/main/src/main/frontendapp/src/utils/GraphUtil.js) and move if necessary the heavy computation code to the backend (with multithreading) as the part that ensures the min distance between nodes might not scale correctly.
+- Add coverage on the Java code using JaCoCo.
+- Audit the performance/complexity of the component [GraphUtil.js](https://github.com/maherbel/dataiku-project/blob/main/src/main/frontendapp/src/utils/GraphUtil.js) as the part that ensures the min distance between nodes might not scale correctly. That would either lead to move the heavy computation code to the backend and solve the issue with multithreading or rework the algorithm with another approach such as Poisson-disc Sampling.
 - Split the class [PathOptimizer.java](https://github.com/maherbel/dataiku-project/blob/main/src/main/java/com/dataiku/millenium/business/PathOptimizer.java) into multiple classes for different responsabilities such as one to compute the possible paths, another one to compute the best path and another one to compute the final success probability.
 
