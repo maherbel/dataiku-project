@@ -1,5 +1,6 @@
 package com.dataiku.millenium.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -20,6 +21,9 @@ public class MilleniumFalconModel {
 
     @JsonProperty("routes_db")
     private String routesDB;
+
+    @JsonIgnore
+    private String parentPath;
 
     public int getAutonomy() {
         return autonomy;
@@ -53,6 +57,14 @@ public class MilleniumFalconModel {
         this.routesDB = routesDB;
     }
 
+    public String getParentPath() {
+        return parentPath;
+    }
+
+    public void setParentPath(String parentPath) {
+        this.parentPath = parentPath;
+    }
+
     @Override
     public String toString() {
         return "AppConfigurationModel{" +
@@ -60,6 +72,7 @@ public class MilleniumFalconModel {
                 ", departure='" + departure + '\'' +
                 ", arrival='" + arrival + '\'' +
                 ", routesDB='" + routesDB + '\'' +
+                ", path='" + parentPath + '\'' +
                 '}';
     }
 }

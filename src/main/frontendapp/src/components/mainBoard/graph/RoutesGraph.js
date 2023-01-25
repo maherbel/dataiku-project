@@ -135,7 +135,7 @@ export default class RoutesGraph extends Component {
                         edgeArrowSize={1}
                         allowMultiselect={false}
                         showGraphControls={true}
-                        readOnly={true}
+                        readOnly={false}
                     />
                 </div>
             );

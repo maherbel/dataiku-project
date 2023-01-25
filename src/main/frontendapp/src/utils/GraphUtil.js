@@ -107,9 +107,9 @@ const GraphUtil = {
             let stepDescription = '';
             if (planet !== departure && planet !== arrival && !refuel) {
                 stepDescription = 'Day [' + day + ']: Travel to ' + planet + ' in ' + (day - missionPath[stepNum-1].day) + ' day(s)';
-            } else if (planet === departure) {
+            } else if (planet === departure && !refuel) {
                 stepDescription = 'Day [' + day + ']: Departure from ' + planet;
-            } else if (planet === arrival) {
+            } else if (planet === arrival && !refuel) {
                 stepDescription = 'Day [' + day + ']: Arrival to destination ' + planet + ' in ' + (day - missionPath[stepNum-1].day) + ' day(s)';
             } else if (refuel) {
                 stepDescription = 'Day [' + day + ']: Refuel on ' + planet;

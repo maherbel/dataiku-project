@@ -75,8 +75,20 @@ public class AppConfig {
             inputStream = resource.getInputStream();
         }
         MilleniumFalconModel model = objectMapper.readValue(inputStream, MilleniumFalconModel.class);
+        model.setParentPath(getMilleniumFilePath(milleniumFalconJsonFilePath));
         logger.info("Millenium falcon model loaded: {}", model);
         return model;
+    }
+
+    private String getMilleniumFilePath(String milleniumFalconJsonFilePath) {
+        File file = new File(milleniumFalconJsonFilePath);
+        File parentDirectory = file.getParentFile();
+        if (parentDirectory == null) {
+            String errorMessage = "Invalid file path: " + milleniumFalconJsonFilePath;
+            logger.error(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
+        }
+        return parentDirectory.getPath();
     }
 
     /**

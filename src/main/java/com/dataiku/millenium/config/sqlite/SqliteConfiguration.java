@@ -69,7 +69,7 @@ public class SqliteConfiguration {
     public DataSource dataSource() throws IOException, URISyntaxException, DataSourceFormatNotSupported {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(Objects.requireNonNull(env.getProperty("driverClassName")));
-        String routesDatabasePath = milleniumFalconModel.getRoutesDB();
+        String routesDatabasePath = milleniumFalconModel.getParentPath() + File.separator + milleniumFalconModel.getRoutesDB();
         // the database file's URL
         URL routesDBFileUrl;
         if (Paths.get(routesDatabasePath).isAbsolute()) {
@@ -87,7 +87,7 @@ public class SqliteConfiguration {
             dataSource.setUrl(jdbcUrl);
             logger.info("JDBC URL: {}", jdbcUrl);
         } else if (Objects.equals(routesDBFileUrl.getProtocol(), "jar")) {
-            computeDataSourceUrl();
+            computeDataSourceUrl(routesDatabasePath);
             String jdbcUrl = JDBC_SQLITE + this.tempFile.getAbsolutePath();
             dataSource.setUrl(jdbcUrl);
             logger.info("JDBC URL: {}", jdbcUrl);
@@ -107,11 +107,11 @@ public class SqliteConfiguration {
      *
      * @throws IOException
      */
-    private void computeDataSourceUrl() throws IOException {
+    private void computeDataSourceUrl(String routesDatabasePath) throws IOException {
         cleanupTempFile();
         this.tempFile = File.createTempFile("tempDB", ".db");
         logger.info("Temp file {} has been created.", this.tempFile.getName());
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(milleniumFalconModel.getRoutesDB());
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(routesDatabasePath);
              FileOutputStream outputStream = new FileOutputStream(tempFile)) {
             int read;
             byte[] bytes = new byte[1024];
@@ -122,7 +122,7 @@ public class SqliteConfiguration {
     }
 
     /**
-     * Helper method that deletes the temporary file created by the {@link #computeDataSourceUrl()} method
+     * Helper method that deletes the temporary file created by the {@link #computeDataSourceUrl(String)} method
      * if it exists. This method is called during bean destruction to clean up any temporary files created
      * by the application.
      */
