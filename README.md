@@ -21,12 +21,12 @@ NB: The only condition is to keep the WAR, `./install-alias.sh` and `give-me-the
 
 ## How to use the executable
 
-Once **give-me-the-odds.sh** have been generated, you can open the terminal and execute with or without parameters to either deploy the App or execute the CLI.
+Once **give-me-the-odds.sh** have been generated, you can open the terminal and execute it with or without parameters to either deploy the App or execute the CLI.
 
 ### Deploy App with 0 parameters
 
 Deploys the App locally and can be accessed at [http://localhost:8080](http://localhost:8080).
-If you don't specify any parameter, the default config file [config/millenium-falcon.json](https://github.com/maherbel/dataiku-project/blob/readme-update/src/main/resources/config/millennium-falcon.json) will be used automatically.
+If you don't specify any parameter, the default config file [config/millenium-falcon.json](https://github.com/maherbel/dataiku-project/blob/main/src/main/resources/config/millennium-falcon.json) will be used automatically.
 
 ### Deploy App with 1 parameter
 
@@ -44,7 +44,7 @@ The parameter can be either:
 
 ### Deploy App with 2 parameters
 
-This will deploy the CLI mode of the App, use the first/second param to load the Millenium Falcon/Empire data and compute the success probability.
+This will enable the CLI mode of the App, use the first/second param to load the Millenium Falcon/Empire data and compute the success probability.
 For example:
 ```
 ./give-me-the-odds.sh example1/millennium-falcon.json example1/empire.json
@@ -74,10 +74,10 @@ These are the instructions for further details on how to use the App, please mak
 This is the graph that represents the Millenium Falcon routes from planet to planet with the travel times, the departure and the arrival of the mission => **this data is computed from the millenium-falcon.json file.**
 
 You can click on the button `Regenerate Graph` to refresh the Graph's UI if the nodes are not well positioned or if the graph is not well rendered.
-You can also click on the rectangle near the zoom controls to re-center the graph.
+You can also move around nodes by dragging them and you can click on the rectangle near the zoom controls to re-center the graph.
 
 - File Upload zone (on the upper-center of the screen):
-This is where you can upload or drag and drop a file containing the empire intercepted data. Once that's done, the result will be computed and further details are provided on the right part.
+This is where you can upload or drag and drop a file containing the empire intercepted data. Once that's done, the result will be computed and further details will be provided on the right part.
 
 - Mission Success Probability (on right part of the screen, see next section for screenshot):
 This will contain the mission success probability and the detailed route if there is a solution (**meaning that the result is greater than 0%**).
@@ -116,18 +116,19 @@ Whenever the app is launched using 2 parameters (please refer to the section abo
 Logs containing extra details on the configs, route success probability computation, etc.. are being generated on the root of the folder where the script is being launched.
 The kind of details you can find are as below:
 ```
-14:29:24.365 [main] INFO  c.d.millenium.cli.CommandLineRunner - Computing mission result from CLI..
-14:29:24.435 [main] INFO  c.d.millenium.business.PathOptimizer - Compute mission result started. Departure: [Tatooine], Arrival: [Endor], Countdown: [10], Autonomy: [6]
-14:29:24.435 [main] INFO  c.d.millenium.business.PathOptimizer - 2 Possible paths found.
-14:29:24.435 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Hoth', day='6', Risky}, Planet{name='Hoth', day='7', Refuel, Risky}, Planet{name='Endor', day='8'}]] is the best path so far as it has [2] risky positions and arrives on [Endor] on Day [8].
-14:29:24.436 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Hoth', day='8', delay='2', Risky}, Planet{name='Hoth', day='9', Refuel}, Planet{name='Endor', day='10'}]] is the best path so far as it has [1] risky positions and arrives on [Endor] on Day [10].
-14:29:24.436 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='6'}, Planet{name='Dagobah', day='7', Refuel}, Planet{name='Hoth', day='8', Risky}, Planet{name='Endor', day='9'}]] is the best path so far as it has [1] risky positions and arrives on [Endor] on Day [9].
-14:29:24.436 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='7', delay='1'}, Planet{name='Dagobah', day='8', Refuel}, Planet{name='Hoth', day='9'}, Planet{name='Endor', day='10'}]] is the best path so far as it has [0] risky positions and arrives on [Endor] on Day [10].
-14:29:24.436 [main] INFO  c.d.millenium.services.RouteService - Compute mission result ended with a success probability of [100.0%].
-14:29:24.436 [main] INFO  c.d.m.aspect.MethodDurationAspect - Method computeMissionResult in class com.dataiku.millenium.services.RouteService took 70 ms
-14:29:24.436 [main] INFO  c.d.millenium.cli.CommandLineRunner - ****************** Results ******************
-14:29:24.436 [main] INFO  c.d.millenium.cli.CommandLineRunner - Mission Success Probability: 100.0
-14:29:24.436 [main] INFO  c.d.millenium.cli.CommandLineRunner - *********************************************
+01:50:23.038 [main] INFO  c.d.millenium.cli.CommandLineRunner - Computing mission result from CLI..
+01:50:23.118 [main] INFO  c.d.millenium.business.PathOptimizer - Compute mission result started. Departure: [Tatooine], Arrival: [Endor], Countdown: [10], Autonomy: [6]
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - 2 Possible paths found that lead from Tatooine to Endor in 10 days.
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - [Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='6'}, Planet{name='Dagobah', day='7', Refuel}, Planet{name='Hoth', day='8'}, Planet{name='Endor', day='9'}] is a possible path.
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - [Planet{name='Tatooine', day='0'}, Planet{name='Hoth', day='6'}, Planet{name='Hoth', day='7', Refuel}, Planet{name='Endor', day='8'}] is a possible path.
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - Computing the best success probability from all possible paths..
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='6'}, Planet{name='Dagobah', day='7', Refuel}, Planet{name='Hoth', day='8', Risky}, Planet{name='Endor', day='9'}]] is the best path so far as it has [1] risky positions and arrives on [Endor] on Day [9].
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='7', delay='1'}, Planet{name='Dagobah', day='8', Refuel}, Planet{name='Hoth', day='9'}, Planet{name='Endor', day='10'}]] is the best path so far as it has [0] risky positions and arrives on [Endor] on Day [10].
+01:50:23.119 [main] INFO  c.d.millenium.services.RouteService - Compute mission result ended with a success probability of [100.0%].
+01:50:23.120 [main] INFO  c.d.m.aspect.MethodDurationAspect - Method computeMissionResult in class com.dataiku.millenium.services.RouteService took 81 ms
+01:50:23.120 [main] INFO  c.d.millenium.cli.CommandLineRunner - ****************** Results ******************
+01:50:23.120 [main] INFO  c.d.millenium.cli.CommandLineRunner - Mission Success Probability: 100.0
+01:50:23.120 [main] INFO  c.d.millenium.cli.CommandLineRunner - *********************************************
 
 ```
 So please refer to these if you need more details on the result computation.
@@ -137,9 +138,9 @@ You can use the command below to stream the application log:
 tail -f /PATH_TO_THE_LOGS/application.log
 ```
 
-#### Rest API
+#### Rest API (Postman)
 
-If you are familiar with POSTMAN, you can import the configuration file from [here](https://github.com/maherbel/dataiku-project/blob/main/Postman_API_config.json) and you'll be able to query the below endpoints:
+If you are familiar with Postman, you can import the configuration file from [here](https://github.com/maherbel/dataiku-project/blob/main/Postman_API_config.json) and you'll be able to query the below endpoints:
 
 `/healthcheck` (GET)
 
