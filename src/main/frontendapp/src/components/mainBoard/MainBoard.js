@@ -23,7 +23,7 @@ const MainBoard = () => {
         <Grid2 sx={{ width: '100%', height: '100%' }}>
           <RoutesGraph missionPath={missionPath} />
           <Typography variant='caption' sx={{ textAlign: "left", fontWeight: "bold" }}>
-            Tip: Use the little rectangle above (on the right of zoom slider) to re-center the graph.
+            Tip: Drag the nodes to a better position to have a clearer graph. Also, use the little rectangle above (on the right of zoom slider) to re-center the graph.
           </Typography>
         </Grid2>
       </Grid2>
