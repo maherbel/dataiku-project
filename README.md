@@ -10,21 +10,25 @@ To be able to compile/run/build the project, you must have:
 - Gradle 7.6 or higher
 
 ## How to Build/Deploy
-1) Open your favourite terminal and navigate to the project's root folder.
-2) Type `gradle clean build` to clean up any temp files and generate the WAR "**millenium-0.0.1-SNAPSHOT.war**".
-3) Navigate to the folder "**build/libs**" and copy the generated WAR into the folder "**scripts**".
-4) Navigate to the folder "**scripts**" and type [`./install-alias.sh`](https://github.com/maherbel/dataiku-project/blob/main/scripts/install-alias.sh) to generate the launch script called `give-me-the-odds.sh`.
+**If you already have a packaged WAR (from releases page for example), you can skip steps 1-4 and go directly to step 5.**
 
-NB: The only condition is to keep the WAR, `./install-alias.sh` and `give-me-the-odds.sh` in the same folder (be it scripts or another one).
+1) Open your favourite terminal and navigate to the [frontendapp](https://github.com/maherbel/dataiku-project/tree/main/src/main/frontendapp) folder.
+2) Execute `yarn build` to build the JS/React code which will create the static files under `frontend/build/static` (these will be packaged into the final WAR).
+3) Navigate to the project's root folder and execute `gradle clean build` to clean up any temp files and generate the WAR "**millenium-0.0.1-SNAPSHOT.war**".
+4) Navigate to the folder "**build/libs**".
+5) Copy the packaged WAR into the folder "**scripts**".
+6) Navigate to the folder "**scripts**" and type [`./install-alias.sh`](https://github.com/maherbel/dataiku-project/blob/main/scripts/install-alias.sh) to generate the launch script called `give-me-the-odds.sh`.
+
+**Important: The only condition is to keep the WAR, `./install-alias.sh` and `give-me-the-odds.sh` in the same folder (can be scripts or any another external folder).**
 
 ## How to use the executable
 
-Once **give-me-the-odds.sh** have been generated, you can open the terminal and execute with or without parameters to either deploy the App or execute the CLI.
+Once **give-me-the-odds.sh** have been generated, you can open the terminal and execute it with or without parameters to either deploy the App or execute the CLI.
 
 ### Deploy App with 0 parameters
 
 Deploys the App locally and can be accessed at [http://localhost:8080](http://localhost:8080).
-If you don't specify any parameter, the default config file [config/millenium-falcon.json](https://github.com/maherbel/dataiku-project/blob/readme-update/src/main/resources/config/millennium-falcon.json) will be used automatically.
+If you don't specify any parameter, the default config file [config/millenium-falcon.json](https://github.com/maherbel/dataiku-project/blob/main/src/main/resources/config/millennium-falcon.json) will be used automatically.
 
 ### Deploy App with 1 parameter
 
@@ -42,7 +46,7 @@ The parameter can be either:
 
 ### Deploy App with 2 parameters
 
-This will deploy the CLI mode of the App, use the first/second param to load the Millenium Falcon/Empire data and compute the success probability.
+This will enable the CLI mode of the App, use the first/second param to load the Millenium Falcon/Empire data and compute the success probability.
 For example:
 ```
 ./give-me-the-odds.sh example1/millennium-falcon.json example1/empire.json
@@ -72,10 +76,10 @@ These are the instructions for further details on how to use the App, please mak
 This is the graph that represents the Millenium Falcon routes from planet to planet with the travel times, the departure and the arrival of the mission => **this data is computed from the millenium-falcon.json file.**
 
 You can click on the button `Regenerate Graph` to refresh the Graph's UI if the nodes are not well positioned or if the graph is not well rendered.
-You can also click on the rectangle near the zoom controls to re-center the graph.
+You can also move around nodes by dragging them and you can click on the rectangle near the zoom controls to re-center the graph.
 
 - File Upload zone (on the upper-center of the screen):
-This is where you can upload or drag and drop a file containing the empire intercepted data. Once that's done, the result will be computed and further details are provided on the right part.
+This is where you can upload or drag and drop a file containing the empire intercepted data. Once that's done, the result will be computed and further details will be provided on the right part.
 
 - Mission Success Probability (on right part of the screen, see next section for screenshot):
 This will contain the mission success probability and the detailed route if there is a solution (**meaning that the result is greater than 0%**).
@@ -107,25 +111,26 @@ Whenever the app is launched using 2 parameters (please refer to the section abo
 
 <img width="885" alt="CLI Examples" src="https://user-images.githubusercontent.com/10635526/214306163-9013d442-27fc-4414-92a4-972131b10376.png">
 
-### Logs and Rest API
+### Troubleshoot through Logs and Rest API
 
 #### Logs
 
 Logs containing extra details on the configs, route success probability computation, etc.. are being generated on the root of the folder where the script is being launched.
 The kind of details you can find are as below:
 ```
-14:29:24.365 [main] INFO  c.d.millenium.cli.CommandLineRunner - Computing mission result from CLI..
-14:29:24.435 [main] INFO  c.d.millenium.business.PathOptimizer - Compute mission result started. Departure: [Tatooine], Arrival: [Endor], Countdown: [10], Autonomy: [6]
-14:29:24.435 [main] INFO  c.d.millenium.business.PathOptimizer - 2 Possible paths found.
-14:29:24.435 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Hoth', day='6', Risky}, Planet{name='Hoth', day='7', Refuel, Risky}, Planet{name='Endor', day='8'}]] is the best path so far as it has [2] risky positions and arrives on [Endor] on Day [8].
-14:29:24.436 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Hoth', day='8', delay='2', Risky}, Planet{name='Hoth', day='9', Refuel}, Planet{name='Endor', day='10'}]] is the best path so far as it has [1] risky positions and arrives on [Endor] on Day [10].
-14:29:24.436 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='6'}, Planet{name='Dagobah', day='7', Refuel}, Planet{name='Hoth', day='8', Risky}, Planet{name='Endor', day='9'}]] is the best path so far as it has [1] risky positions and arrives on [Endor] on Day [9].
-14:29:24.436 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='7', delay='1'}, Planet{name='Dagobah', day='8', Refuel}, Planet{name='Hoth', day='9'}, Planet{name='Endor', day='10'}]] is the best path so far as it has [0] risky positions and arrives on [Endor] on Day [10].
-14:29:24.436 [main] INFO  c.d.millenium.services.RouteService - Compute mission result ended with a success probability of [100.0%].
-14:29:24.436 [main] INFO  c.d.m.aspect.MethodDurationAspect - Method computeMissionResult in class com.dataiku.millenium.services.RouteService took 70 ms
-14:29:24.436 [main] INFO  c.d.millenium.cli.CommandLineRunner - ****************** Results ******************
-14:29:24.436 [main] INFO  c.d.millenium.cli.CommandLineRunner - Mission Success Probability: 100.0
-14:29:24.436 [main] INFO  c.d.millenium.cli.CommandLineRunner - *********************************************
+01:50:23.038 [main] INFO  c.d.millenium.cli.CommandLineRunner - Computing mission result from CLI..
+01:50:23.118 [main] INFO  c.d.millenium.business.PathOptimizer - Compute mission result started. Departure: [Tatooine], Arrival: [Endor], Countdown: [10], Autonomy: [6]
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - 2 Possible paths found that lead from Tatooine to Endor in 10 days.
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - [Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='6'}, Planet{name='Dagobah', day='7', Refuel}, Planet{name='Hoth', day='8'}, Planet{name='Endor', day='9'}] is a possible path.
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - [Planet{name='Tatooine', day='0'}, Planet{name='Hoth', day='6'}, Planet{name='Hoth', day='7', Refuel}, Planet{name='Endor', day='8'}] is a possible path.
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - Computing the best success probability from all possible paths..
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='6'}, Planet{name='Dagobah', day='7', Refuel}, Planet{name='Hoth', day='8', Risky}, Planet{name='Endor', day='9'}]] is the best path so far as it has [1] risky positions and arrives on [Endor] on Day [9].
+01:50:23.119 [main] INFO  c.d.millenium.business.PathOptimizer - [[Planet{name='Tatooine', day='0'}, Planet{name='Dagobah', day='7', delay='1'}, Planet{name='Dagobah', day='8', Refuel}, Planet{name='Hoth', day='9'}, Planet{name='Endor', day='10'}]] is the best path so far as it has [0] risky positions and arrives on [Endor] on Day [10].
+01:50:23.119 [main] INFO  c.d.millenium.services.RouteService - Compute mission result ended with a success probability of [100.0%].
+01:50:23.120 [main] INFO  c.d.m.aspect.MethodDurationAspect - Method computeMissionResult in class com.dataiku.millenium.services.RouteService took 81 ms
+01:50:23.120 [main] INFO  c.d.millenium.cli.CommandLineRunner - ****************** Results ******************
+01:50:23.120 [main] INFO  c.d.millenium.cli.CommandLineRunner - Mission Success Probability: 100.0
+01:50:23.120 [main] INFO  c.d.millenium.cli.CommandLineRunner - *********************************************
 
 ```
 So please refer to these if you need more details on the result computation.
@@ -135,9 +140,9 @@ You can use the command below to stream the application log:
 tail -f /PATH_TO_THE_LOGS/application.log
 ```
 
-#### Rest API
+#### Rest API (Postman)
 
-If you are familiar with POSTMAN, you can import the configuration file from [here](https://github.com/maherbel/dataiku-project/blob/main/Postman_API_config.json) and you'll be able to query the below endpoints:
+If you are familiar with Postman, you can import the configuration file from [here](https://github.com/maherbel/dataiku-project/blob/main/Postman_API_config.json) and you'll be able to query the below endpoints:
 
 `/healthcheck` (GET)
 
@@ -153,13 +158,12 @@ Fetches the current mission's data (extracted from the millenium falcon config f
 
 
 ### Missing features to roll to PROD
-- Dockerize the app to be able to deploy it on the cloud.
 - Plug the logs (backend/frontend) to a log aggregator such as Splunk/Datadog.
 - Track the technical performance of the App especially the TP99, TP90, TP50 of the endpoint `/missionResultSuccess` and setup alerts to be aware if at some point the performance is degraded below a certain threshold.
 - Add user metrics to have a better understanding of the feature usage/success/failure with a platform like Amplitude.
 - Add unit tests and Cypress tests for UI code.
 - Enhance the logging to the UI level with a proper logger (using a dedicated Util).
-- Add coverage on the Java code using Jacoco.
-- Audit the component [GraphUtil.js](https://github.com/maherbel/dataiku-project/blob/main/src/main/frontendapp/src/utils/GraphUtil.js) and move if necessary the heavy computation code to the backend.
-- Split the class [PathOptimizer.java](https://github.com/maherbel/dataiku-project/blob/main/src/main/java/com/dataiku/millenium/business/PathOptimizer.java) into multiple classes such as one to compute the possible paths, another one to compute the best path and another one to compute the final success probability. 
+- Add coverage on the Java code using JaCoCo.
+- Audit the performance/complexity of the component [GraphUtil.js](https://github.com/maherbel/dataiku-project/blob/main/src/main/frontendapp/src/utils/GraphUtil.js) as the part that ensures the min distance between nodes might not scale correctly. That would either lead to move the heavy computation code to the backend and solve the issue with multithreading or rework the algorithm with another approach such as Poisson-disc Sampling.
+- Split the class [PathOptimizer.java](https://github.com/maherbel/dataiku-project/blob/main/src/main/java/com/dataiku/millenium/business/PathOptimizer.java) into multiple classes for different responsabilities such as one to compute the possible paths, another one to compute the best path and another one to compute the final success probability.
 
